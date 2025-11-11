@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Borrowing extends Model
+{
+    /** @use HasFactory<\Database\Factories\BorrowingFactory> */
+    use HasFactory;
+
+    protected $fillable = [
+        'member_id',
+        'book_copy_id',
+        'status',
+        'borrowed_date',
+        'due_date',
+        'returned_date'
+    ];
+
+    public function member(): BelongsTo{
+        return $this->belongsTo(Member::class);
+    }
+
+    public function bookCopy(): BelongsTo{
+        return $this->belongsTo(BookCopy::class);
+    }
+}
