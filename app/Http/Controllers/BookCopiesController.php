@@ -3,35 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePublisherRequest;
-use App\Models\Publisher;
+use App\Http\Requests\StoreBookCopyRequest;
+use App\Models\BookCopy;
 use Illuminate\Http\Request;
 
-class PublisherController extends Controller
+class BookCopiesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $publishers = Publisher::paginate(10);
+        $bookCopies = BookCopy::paginate(10);
 
         return response()->json([
-            'publishers' => $publishers
-,        ]);
+            'bookCopies' => $bookCopies 
+        ], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePublisherRequest $request)
+    public function store(StoreBookCopyRequest $request)
     {
-        $publisher = Publisher::create($request->validated());
+        $bookCopy = BookCopy::create($request->validated());
 
         return response()->json([
-            'publisher' => $publisher,
-            'message' => "successfully created"
-        ]);
+            'book' => $bookCopy
+        ], 200);
     }
 
     /**

@@ -27,7 +27,9 @@ class BookController extends Controller
     {
         $book = Book::create($request->validated());
 
-        return new BookResource($book);
+        $book->authors()->attach($request->input('authors'));
+
+        return new BookResource($book->load(['category', 'authors', 'publisher', 'bookCopies']));
     }
 
     /**

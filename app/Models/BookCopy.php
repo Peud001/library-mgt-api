@@ -14,7 +14,11 @@ class BookCopy extends Model
 
     protected $fillable = [
         'book_id',
-        'barcode'
+        'barcode',
+        'status',
+        'total_copies',
+        'available_copies',
+        'cover_image'
     ];
 
     public function book(): BelongsTo{
