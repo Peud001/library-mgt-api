@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreMemberRequest;
+use App\Models\Member;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
@@ -12,15 +14,23 @@ class MemberController extends Controller
      */
     public function index()
     {
-        //
+        $members = Member::paginate(10);
+
+        return response()->json([
+            'members' => $members
+        ], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreMemberRequest $request)
     {
-        //
+        $member = Member::create($request->validated());
+
+        return response()->json([
+            'member' => $member
+        ], 201);
     }
 
     /**
