@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class StoreBookCopyRequest extends FormRequest
+class StoreBorrowingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,15 +22,12 @@ class StoreBookCopyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'book_id' => 'required|integer|exists:books,id',
-            'barcode' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('book_copies', 'barcode')->ignore($this->route('book_copy')?->id),
-            ],
-            'status' => 'required',
-            'cover_image' => 'nullable|string'
+            'member_id' => 'required|integer|exists:members,id',
+            'book_copy_id' => 'required|integer|exists:book_copies,id',
+            'status' => 'required|string',
+            'borrowed_date' => 'required|date',
+            'due_date' => 'required|date',
+            'returned_date' => 'required|date'
         ];
     }
 }

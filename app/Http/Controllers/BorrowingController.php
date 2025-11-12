@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreBorrowingRequest;
+use App\Http\Resources\BorrowingResource;
+use App\Models\Borrowing;
 use Illuminate\Http\Request;
 
 class BorrowingController extends Controller
@@ -12,15 +15,19 @@ class BorrowingController extends Controller
      */
     public function index()
     {
-        //
+        $borrowing = Borrowing::with('member', 'bookCopy')->paginate(10);
+
+        return BorrowingResource::collection($borrowing);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreBorrowingRequest $request)
     {
-        //
+        $borrowing = Borrowing::create($request->validated());
+
+        return new BorrowingResource($borrowing);
     }
 
     /**
