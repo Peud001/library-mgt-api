@@ -36,4 +36,21 @@ class Book extends Model
     public function category(): BelongsTo{
         return $this->belongsTo(Category::class);
     }
+
+    public function scopeSearch($query, $term){
+        $term =  strtolower(trim($term));
+
+        return $query->where( function($query) use ($term){
+            $query->where('title', 'LIKE', "%{$term}%")
+            ->orWhereHas('authors', function($authorQuery) use($term){
+                $authorQuery->where('name', 'LIKE', "%{$term}%");
+            })
+            ->orWhereHas('publisher', function($publisherQuery) use($term){
+                $publisherQuery->where('name', 'LIKE', "%{$term}%");
+            })
+            ->orWhereHas('category', function($categoryQuery) use($term){
+                $categoryQuery->where('name', 'LIKE', "%{$term}%");
+            });
+        });
+    }
 }

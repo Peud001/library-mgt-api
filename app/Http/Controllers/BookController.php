@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Resources\BookResource;
@@ -13,9 +14,16 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::with('authors', 'category', 'bookCopies', 'publisher')->paginate(10);
+        $query = Book::with('authors', 'category', 'bookCopies', 'publisher');
+
+        //if the user sent ?search= in the URL
+        if ($request->filled('search')){
+            $query->search($request->input('search'));
+        }
+
+        $books = $query->paginate(10);
 
         return BookResource::collection($books);
     }

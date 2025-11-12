@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreBookCopyRequest extends FormRequest
 {
@@ -23,10 +24,13 @@ class StoreBookCopyRequest extends FormRequest
     {
         return [
             'book_id' => 'required|integer|exists:books,id',
-            'barcode' => 'required|string|max:255',
+            'barcode' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('book_copies', 'barcode')->ignore($this->route('bookCopy')->id),
+            ],
             'status' => 'required',
-            'total_copies' => 'required|integer',
-            'available_copies' => 'required|integer',
             'cover_image' => 'nullable|string'
         ];
     }

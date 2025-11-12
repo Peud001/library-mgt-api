@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreBookRequest extends FormRequest
 {
@@ -26,7 +27,11 @@ class StoreBookRequest extends FormRequest
             'description' => 'nullable|string',
             'category_id' => 'required|integer|exists:categories,id',
             'publisher_id' => 'nullable|integer|exists:publishers,id',
-            'isbn' => 'required|string|unique:books,isbn',
+            'isbn' => [
+                'required',
+                'string',
+                Rule::unique('books', 'isbn')->ignore($this->book),
+            ],
             'authors' => 'required|array|min:1',
             'authors.*' => 'exists:authors,id'
         ];

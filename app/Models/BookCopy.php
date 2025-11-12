@@ -16,8 +16,6 @@ class BookCopy extends Model
         'book_id',
         'barcode',
         'status',
-        'total_copies',
-        'available_copies',
         'cover_image'
     ];
 
