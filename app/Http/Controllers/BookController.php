@@ -35,24 +35,29 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Book $book)
     {
-        //
+        return new BookResource($book->load(['category', 'authors', 'publisher', 'bookCopies']));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreBookRequest $request, Book $book)
     {
-        //
+        $book->update($request->validated());
+        $book->authors()->sync($request->input('authors', []));
+
+        return new BookResource($book->load(['category', 'authors', 'publisher', 'bookCopies']));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Book $book)
     {
-        //
+        $book->delete();
+
+        return response()->json(['message' => 'Book deleted successfully']);
     }
 }
