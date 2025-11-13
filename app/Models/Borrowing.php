@@ -20,11 +20,22 @@ class Borrowing extends Model
         'returned_date'
     ];
 
+    protected $casts = [
+        'borrowed_date' => 'date',
+        'due_date' => 'date',
+        'returned_date' => 'date'
+    ];
+
+
     public function member(): BelongsTo{
         return $this->belongsTo(Member::class);
     }
 
     public function bookCopy(): BelongsTo{
         return $this->belongsTo(BookCopy::class);
+    }
+
+    public function getIsOverdueAttribute(): bool{
+        return $this->due_date && $this->due_date->isPast() && $this->status !== 'returned';
     }
 }

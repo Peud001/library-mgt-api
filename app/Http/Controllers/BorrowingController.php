@@ -7,6 +7,7 @@ use App\Http\Requests\StoreBorrowingRequest;
 use App\Http\Resources\BorrowingResource;
 use App\Models\Borrowing;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class BorrowingController extends Controller
 {
@@ -27,30 +28,34 @@ class BorrowingController extends Controller
     {
         $borrowing = Borrowing::create($request->validated());
 
-        return new BorrowingResource($borrowing);
+        return (new BorrowingResource($borrowing));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Borrowing $borrowing)
     {
-        //
+        return new BorrowingResource($borrowing);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreBorrowingRequest $request, Borrowing $borrowing)
     {
-        //
+        $borrowing->update($request->validated());
+
+        return new BorrowingResource($borrowing);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Borrowing $borrowing)
     {
-        //
+        $borrowing->delete();
+
+        return response()->json(['message' => 'Record deleted successfully'],200);
     }
 }

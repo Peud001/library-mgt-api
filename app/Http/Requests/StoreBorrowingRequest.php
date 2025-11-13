@@ -24,10 +24,10 @@ class StoreBorrowingRequest extends FormRequest
         return [
             'member_id' => 'required|integer|exists:members,id',
             'book_copy_id' => 'required|integer|exists:book_copies,id',
-            'status' => 'required|string',
+            'status' => 'required|string|in:borrowed,returned,overdue',
             'borrowed_date' => 'required|date',
             'due_date' => 'required|date',
-            'returned_date' => 'required|date'
+            'returned_date' => 'nullable|date'
         ];
     }
 }

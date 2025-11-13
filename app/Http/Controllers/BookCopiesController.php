@@ -75,6 +75,6 @@ class BookCopiesController extends Controller
 
         return response()->json([
             'message' => 'Deleted successfully'
-        ]);
+        ], 200);
     }
 }

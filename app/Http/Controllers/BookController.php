@@ -37,7 +37,7 @@ class BookController extends Controller
 
         $book->authors()->attach($request->input('authors'));
 
-        return new BookResource($book->load(['category', 'authors', 'publisher', 'bookCopies']));
+        return new BookResource($book);
     }
 
     /**
@@ -45,7 +45,7 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        return new BookResource($book->load(['category', 'authors', 'publisher', 'bookCopies']));
+        return new BookResource($book);
     }
 
     /**
@@ -56,7 +56,7 @@ class BookController extends Controller
         $book->update($request->validated());
         $book->authors()->sync($request->input('authors', []));
 
-        return new BookResource($book->load(['category', 'authors', 'publisher', 'bookCopies']));
+        return new BookResource($book);
     }
 
     /**
@@ -66,6 +66,6 @@ class BookController extends Controller
     {
         $book->delete();
 
-        return response()->json(['message' => 'Book deleted successfully']);
+        return response()->json(['message' => 'Book deleted successfully'],200);
     }
 }
