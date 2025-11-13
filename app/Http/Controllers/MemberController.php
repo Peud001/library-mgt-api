@@ -36,24 +36,33 @@ class MemberController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Member $member)
     {
-        //
+        return response()->json([
+            'member' => $member
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreMemberRequest $request, Member $member)
     {
-        //
+        $member->update($request->validated());
+
+        return response()->json([
+            'member' => $member
+        ], 201);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Member $member)
     {
-        //
+        $member->delete();
+        return response()->json([
+            'message' => 'Member deleted successfully'
+        ]);
     }
 }

@@ -37,24 +37,34 @@ class PublisherController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Publisher $publisher)
     {
-        //
+        return response()->json([
+            'publisher' => $publisher
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StorePublisherRequest $request, Publisher $publisher)
     {
-        //
+        $publisher->update($request->validated());
+
+        return response()->json([
+            'publisher' => $publisher
+        ], 201);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Publisher $publisher)
     {
-        //
+        $publisher->delete();
+
+        return response()->json([
+            'message' => 'publisher deleted successfully'
+        ]);
     }
 }

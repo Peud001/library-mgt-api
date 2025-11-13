@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @return bool
+ * @property \Illuminate\Support\Carbon $due_date
+ */
+
 class Borrowing extends Model
 {
     /** @use HasFactory<\Database\Factories\BorrowingFactory> */
@@ -36,6 +41,6 @@ class Borrowing extends Model
     }
 
     public function getIsOverdueAttribute(): bool{
-        return $this->due_date && $this->due_date->isPast() && $this->status !== 'returned';
+        return optional($this->due_date) && $this->due_date->isPast() && $this->status !== 'returned';
     }
 }

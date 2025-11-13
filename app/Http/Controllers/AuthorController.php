@@ -17,17 +17,23 @@ class AuthorController extends Controller
     {
         $authors = Author::with('books')->paginate(10);
 
-        return AuthorResource::collection($authors);
+        return response()->json([
+            'authors' => AuthorResource::collection($authors),
+            'message' => 'Success'
+        ], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(storeAuthorRequest $request)
+    public function store(StoreAuthorRequest $request)
     {
         $author = Author::create($request->validated());
 
-        return new AuthorResource($author);
+        return response()->json([
+            'author'=> new AuthorResource($author),
+            'message' => 'Author saved successfully'
+        ], 201);
     }
 
     /**
@@ -35,7 +41,10 @@ class AuthorController extends Controller
      */
     public function show(Author $author)
     { 
-        return new AuthorResource($author);
+       return response()->json([
+        'author' => new AuthorResource($author),
+        'message' => 'success'
+       ], 200);
     }
 
     /**
@@ -45,7 +54,10 @@ class AuthorController extends Controller
     {
         $author->update($request->validated());
 
-        return new AuthorResource($author);
+        return response()->json([
+            'author' => new AuthorResource($author),
+            'message' => 'Author updated successfully'
+        ], 200);
     }
 
     /**
