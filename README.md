@@ -1,60 +1,197 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Library Management API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Library Management API** is a RESTful API built with **Laravel 12**, designed to manage books, members, borrowings, and library staff efficiently.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Table of Contents
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Environment Configuration](#environment-configuration)
+* [Dependencies](#dependencies)
+* [Running the Application](#running-the-application)
+* [API Endpoints](#api-endpoints)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+  * [Authentication](#authentication)
+  * [Books](#books)
+  * [Members](#members)
+  * [Borrowings](#borrowings)
+  * [Reports](#reports)
+* [Middleware](#middleware)
+* [Error Handling](#error-handling)
+* [Project Structure](#project-structure)
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Requirements
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* PHP 8.1+
+* Composer
+* MySQL / PostgreSQL / SQLite
+* Laravel 12
+* Web server (Apache/Nginx or PHP built-in server)
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Installation
 
-### Premium Partners
+1. Clone the repository:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+git clone https://github.com/yourusername/library-api.git
+cd library-api
+```
 
-## Contributing
+2. Install dependencies:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+composer install
+```
 
-## Code of Conduct
+3. Generate application key:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan key:generate
+```
 
-## Security Vulnerabilities
+4. Run database migrations:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan migrate
+```
 
-## License
+5. (Optional) Seed the database:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-"# library-mgt-api" 
+```bash
+php artisan db:seed
+```
+
+---
+
+## Environment Configuration
+
+Copy `.env.example` to `.env` and configure your environment variables:
+
+```dotenv
+APP_NAME=LibraryAPI
+APP_ENV=local
+APP_KEY=base64:generated_key_here
+APP_URL=http://localhost
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=library
+DB_USERNAME=root
+DB_PASSWORD=secret
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.example.com
+MAIL_PORT=587
+MAIL_USERNAME=username
+MAIL_PASSWORD=password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=noreply@library.com
+MAIL_FROM_NAME="Library API"
+```
+
+---
+
+## Dependencies
+
+* Laravel 12 Framework
+* Laravel Sanctum / JWT Authentication (for API tokens)
+* Eloquent ORM (built-in)
+* Mail services (optional email notifications)
+
+---
+
+## Running the Application
+
+Start the development server:
+
+```bash
+php artisan serve
+```
+
+The API will be available at: `http://127.0.0.1:8000`
+
+---
+
+## API Endpoints
+
+### Authentication
+
+ Endpoint         Method   Description                    
+
+ `/api/register`   POST     Register a new staff/member    
+ `/api/login`      POST     Login and receive access token 
+ `/api/logout`     POST     Logout user                    
+
+### Books
+
+ Endpoint           Method  Description         
+
+ `/api/books`       GET     List all books      
+ `/api/books/{id}`  GET     Get book details    
+ `/api/books`       POST    Create a new book   
+ `/api/books/{id}`  PUT     Update book details 
+ `/api/books/{id}`  DELETE  Delete a book       
+
+### Members
+
+ Endpoint             Method  Description         
+
+ `/api/members`       GET     List all members    
+ `/api/members/{id}`  GET     Get member details  
+ `/api/members`       POST    Register new member 
+ `/api/members/{id}`  PUT     Update member info  
+ `/api/members/{id}`  DELETE  Delete member       
+
+### Borrowings
+
+ Endpoint                       Method  Description            
+
+ `/api/borrowings`              GET     List all borrowings    
+ `/api/borrowings`              POST    Borrow a book          
+ `/api/borrowings/{id}/return`  POST    Return a borrowed book 
+ `/api/borrowings/{id}`         DELETE  Cancel borrowing       
+
+### Reports
+
+ Endpoint                        Method  Description                      
+
+ `/api/reports/borrowed-books`   GET     List of currently borrowed books 
+ `/api/reports/member-activity`  GET     Borrowing history per member     
+
+---
+
+## Middleware
+
+* **Auth Middleware:** Protects endpoints that require authentication.
+* **Role/Permission Middleware:** Optional, for staff vs admin privileges.
+
+---
+
+## Error Handling
+
+Laravel automatically returns JSON for API errors:
+
+```json
+{
+  "message": "Resource not found",
+  "status": 404
+}
+```
+
+Common HTTP codes:
+
+* `400` – Bad Request
+* `401` – Unauthorized
+* `403` – Forbidden
+* `404` – Not Found
+* `500` – Internal Server Error
+
+
+
